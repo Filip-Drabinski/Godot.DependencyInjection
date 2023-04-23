@@ -14,7 +14,7 @@ Godot.DependencyInjection is a lightweight and easy-to-use dependency injection 
 
 ## Installation
 
-You can install the framework via NuGet or clone the repository and add a project reference to the solution created by Godot.
+You can install the framework via [NuGet](https://www.nuget.org/packages/Godot.DependencyInjection) or clone the repository and add a project reference to the solution created by Godot.
 
 
 ## Usage
