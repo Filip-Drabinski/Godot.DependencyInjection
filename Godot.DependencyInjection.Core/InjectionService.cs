@@ -10,8 +10,16 @@ namespace Godot.DependencyInjection;
 /// </summary>
 internal class InjectionService
 {
+    public static readonly Dictionary<Type, InjectableScanner.InjectionMetadata> Metadata;
     private readonly IServiceProvider _serviceProvider;
 
+    /// <summary>
+    /// Initializes static members of the <see cref="InjectionService"/> class.
+    /// </summary>
+    static InjectionService()
+    {
+        Metadata = InjectableScanner.CollectMetadata();
+    }
     /// <summary>
     /// Initializes a new instance of the <see cref="InjectionService"/> class.
     /// </summary>
@@ -64,10 +72,7 @@ internal class InjectionService
                 var nextItem = (type: item.FieldType, instance: item.GetValue(element.instance));
                 memberQueue.Enqueue(nextItem);
             }
-
-            InjectProperties(element.instance, properties);
-            InjectFields(element.instance, fields);
-            InjectMethods(element.instance, element.type);
+            Metadata[element.type].Inject(_serviceProvider,element.instance);
         }
     }
 

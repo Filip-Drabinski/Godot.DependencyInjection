@@ -11,7 +11,7 @@
 	<PropertyGroup>
 		<Title>Godot.DependencyInjection.Core</Title>
 		<RepositoryUrl>https://github.com/Filip-Drabinski/Godot.DependencyInjection</RepositoryUrl>
-		<VersionPrefix>0.2.0</VersionPrefix>
+		<VersionPrefix>0.2.1</VersionPrefix>
 		<Description>
 			Godot.DependencyInjection.Core a part of lightweight and easy-to-use dependency injection framework for the Godot game engine,
 			specifically tailored for C#. It aims to help developers create more modular, testable, and maintainable game projects using the Godot engine.
