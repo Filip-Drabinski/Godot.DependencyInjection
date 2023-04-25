@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -29,7 +29,6 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="Godot.SourceGenerators" Version="4.0.2" />
 		<PackageReference Include="GodotSharp" Version="4.0.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 	</ItemGroup>
