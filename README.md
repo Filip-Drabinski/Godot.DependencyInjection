@@ -44,9 +44,16 @@ public partial class RegularNode : Node2D
 
 ## Configuration
 
-1. Create a script for dependency registration:
+1. Create a script for dependency manager:
     ```csharp
-    public partial class DependencyInjectionNode : DependencyInjectionNodeObserver
+    public partial class DependencyInjectionNode : DependencyInjectionManagerNode
+    {
+    }
+    ```
+2. Add the script to Project -> Project Settings -> Autoload.
+3. Create a node and script for dependency registration:
+    ```csharp
+    public partial class DependencyRegistrationNode : IServicesConfigurator
     {
         public override void ConfigureServices(IServiceCollection services)
         {
@@ -54,7 +61,7 @@ public partial class RegularNode : Node2D
         }
     }
     ```
-2. Add the script to Project -> Project Settings -> Autoload.
+4. Add dependency registration node to scene
 
 
 ## Remarks
