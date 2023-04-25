@@ -20,11 +20,12 @@ You can install the package via [NuGet](https://www.nuget.org/packages/Godot.Dep
 ## Usage
 
 ```csharp
+using Godot.DependencyInjection.Services.Input;
 
 public partial class RegularNode : Node2D
 {
     [Inject]
-    public IService service1;
+    public IInputService service1;
 
     [Inject]
     public IService Service { get; set; }
@@ -57,6 +58,7 @@ public partial class RegularNode : Node2D
     {
         public override void ConfigureServices(IServiceCollection services)
         {
+            services.AddGodotServices();
             services.AddTransient<IService, Service>();
         }
     }
