@@ -1,10 +1,4 @@
-﻿using Godot.DependencyInjection.Exceptions;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Godot.DependencyInjection
 {
@@ -26,7 +20,6 @@ namespace Godot.DependencyInjection
             {
                 _injectionService.InjectDependencies(node);
             }
-
             tree.NodeAdded += _injectionService.InjectDependencies;
         }
 
