@@ -21,16 +21,17 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Remove="Exceptions\**" />
+	  <EmbeddedResource Remove="Exceptions\**" />
+	  <None Remove="Exceptions\**" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="Godot.SourceGenerators" Version="4.0.2" />
 		<PackageReference Include="GodotSharp" Version="4.0.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-		<Folder Include="Exceptions\" />
 	</ItemGroup>
 
 </Project>
