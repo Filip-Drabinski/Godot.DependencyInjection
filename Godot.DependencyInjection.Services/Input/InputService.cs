@@ -7,7 +7,7 @@ namespace Godot.DependencyInjection.Services.Input
     /// <summary>
     /// Injecteable wrapper for <see cref="Godot.Input"/>
     /// </summary>
-    public class InputService : IInputService
+    internal class InputService : IInputService
     {
         /// <inheritdoc/>
         public bool UseAccumulatedInput

@@ -2,7 +2,7 @@
 
 namespace Godot.DependencyInjection.Services.Input
 {
-    internal interface IInputService
+    public interface IInputService
     {        /// <inheritdoc cref="Godot.Input.UseAccumulatedInput"/>
         public bool UseAccumulatedInput
         {
