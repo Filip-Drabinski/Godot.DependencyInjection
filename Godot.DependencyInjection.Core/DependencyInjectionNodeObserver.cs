@@ -1,4 +1,5 @@
 ﻿using Godot.DependencyInjection.Attributes;
+using Godot.DependencyInjection.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Godot.DependencyInjection;
