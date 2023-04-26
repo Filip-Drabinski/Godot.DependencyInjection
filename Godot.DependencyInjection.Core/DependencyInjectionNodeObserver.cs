@@ -10,9 +10,7 @@ namespace Godot.DependencyInjection;
 [IgnoreDependencyInjection]
 [Obsolete("Use DependencyInjectionManagerNode instead of this class")]
 public abstract partial class DependencyInjectionNodeObserver : DependencyInjectionManagerNode, IServicesConfigurator
-{
-
-    
+{    
     /// <inheritdoc/>
     public abstract void ConfigureServices(IServiceCollection services);
 
