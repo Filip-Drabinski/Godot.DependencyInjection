@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godot.DependencyInjection",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godot.DependencyInjection.Core", "Godot.DependencyInjection.Core\Godot.DependencyInjection.Core.csproj", "{B23F3CEF-420F-4349-BAE1-BC7B5C93B8EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Godot.DependencyInjection.Services", "Godot.DependencyInjection.Services\Godot.DependencyInjection.Services.csproj", "{AC1280C1-8CDD-47DD-8CDD-448A52516C44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godot.DependencyInjection.Services", "Godot.DependencyInjection.Services\Godot.DependencyInjection.Services.csproj", "{AC1280C1-8CDD-47DD-8CDD-448A52516C44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
