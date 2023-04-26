@@ -6,20 +6,17 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
-	
+
 	<PropertyGroup>
 		<Title>Godot.DependencyInjection</Title>
 		<RepositoryUrl>https://github.com/Filip-Drabinski/Godot.DependencyInjection</RepositoryUrl>
-		<VersionPrefix>0.2.1</VersionPrefix>
-		<Description>Godot.DependencyInjection is a lightweight and easy-to-use dependency injection framework for the Godot game engine,
-			specifically tailored for C#. It aims to help developers create more modular, testable, and maintainable game projects using the Godot engine.
-		</Description>
+		<VersionPrefix>0.2.2</VersionPrefix>
+		<Description>Custom dependency injection for Godot game engine</Description>
 		<PackageProjectUrl>https://github.com/Filip-Drabinski/Godot.DependencyInjection</PackageProjectUrl>
 		<RepositoryType></RepositoryType>
-		<PackageTags>Godot, dependency injection, di</PackageTags>
+		<PackageTags>Godot, dependency-injection, di</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
-
 
 	<ItemGroup>
 		<PackageReference Include="Godot.DependencyInjection.Core" Version="0.2.0" />

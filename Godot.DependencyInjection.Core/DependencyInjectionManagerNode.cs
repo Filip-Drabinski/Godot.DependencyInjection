@@ -1,71 +1,71 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Godot.DependencyInjection.Injection;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Godot.DependencyInjection
-{
+namespace Godot.DependencyInjection;
+
     public abstract partial class DependencyInjectionManagerNode : Node
+{
+    private InjectionService _injectionService = null!;
+
+    /// <summary>
+    /// Called when the node is ready.
+    /// </summary>
+    public override void _Ready()
     {
-        private InjectionService _injectionService = null!;
+        var tree = GetTree();
+        var nodeLists = ProcessInitialNodes(tree);
+        ServiceProvider serviceProvider = BuildServiceProvider(nodeLists.configurators);
+        _injectionService = new InjectionService(serviceProvider);
 
-        /// <summary>
-        /// Called when the node is ready.
-        /// </summary>
-        public override void _Ready()
+        foreach (var node in nodeLists.nodesToInject)
         {
-            var tree = GetTree();
-            var nodeLists = ProcessInitialNodes(tree);
-            ServiceProvider serviceProvider = BuildServiceProvider(nodeLists.configurators);
-            _injectionService = new InjectionService(serviceProvider);
-
-            foreach (var node in nodeLists.nodesToInject)
-            {
-                _injectionService.InjectDependencies(node);
-            }
-
-            tree.NodeAdded += _injectionService.InjectDependencies;
+            _injectionService.InjectDependencies(node);
         }
 
-        /// <summary>
-        /// Registers services from nodes implementing <see cref="IServicesConfigurator"/>
-        /// </summary>
-        /// <param name="configurators"></param>
-        /// <returns></returns>
-        private static ServiceProvider BuildServiceProvider(List<IServicesConfigurator> configurators)
+        tree.NodeAdded += _injectionService.InjectDependencies;
+    }
+
+    /// <summary>
+    /// Registers services from nodes implementing <see cref="IServicesConfigurator"/>
+    /// </summary>
+    /// <param name="configurators"></param>
+    /// <returns></returns>
+    private static ServiceProvider BuildServiceProvider(List<IServicesConfigurator> configurators)
+    {
+        ServiceCollection services = new();
+        foreach (var item in configurators)
         {
-            ServiceCollection services = new();
-            foreach (var item in configurators)
-            {
-                item.ConfigureServices(services);
-            }
-            var serviceProvider = services.BuildServiceProvider();
-            return serviceProvider;
+            item.ConfigureServices(services);
         }
+        var serviceProvider = services.BuildServiceProvider();
+        return serviceProvider;
+    }
 
-        /// <summary>
-        /// Processes the initial nodes in the scene tree.
-        /// </summary>
-        /// <param name="tree">The scene tree to process.</param>
-        private (List<Node> nodesToInject, List<IServicesConfigurator> configurators) ProcessInitialNodes(SceneTree tree)
+    /// <summary>
+    /// Processes the initial nodes in the scene tree.
+    /// </summary>
+    /// <param name="tree">The scene tree to process.</param>
+    private (List<Node> nodesToInject, List<IServicesConfigurator> configurators) ProcessInitialNodes(SceneTree tree)
+    {
+        var nodesToInject = new List<Node>();
+        var configurators = new List<IServicesConfigurator>();
+        var queue = new Queue<Node>();
+        queue.Enqueue(tree.Root);
+
+        while (queue.TryDequeue(out var element))
         {
-            var nodesToInject = new List<Node>();
-            var configurators = new List<IServicesConfigurator>();
-            var queue = new Queue<Node>();
-            queue.Enqueue(tree.Root);
-
-            while (queue.TryDequeue(out var element))
+            nodesToInject.Add(element);
+            if (element is IServicesConfigurator servicesConfigurator)
             {
-                nodesToInject.Add(element);
-                if (element is IServicesConfigurator servicesConfigurator)
-                {
-                    configurators.Add(servicesConfigurator);
-                }
-
-                var children = element.GetChildren(true);
-                foreach (var child in children)
-                {
-                    queue.Enqueue(child);
-                }
+                configurators.Add(servicesConfigurator);
             }
-            return (nodesToInject: nodesToInject, configurators: configurators);
+
+            var children = element.GetChildren(true);
+            foreach (var child in children)
+            {
+                queue.Enqueue(child);
+            }
         }
+        return (nodesToInject: nodesToInject, configurators: configurators);
     }
 }
