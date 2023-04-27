@@ -25,17 +25,23 @@ using Godot.DependencyInjection.Services.Input;
 public partial class RegularNode : Node2D
 {
     [Inject]
-    public IInputService service1;
+    public IInputService inputService;
 
     [Inject]
     public IService Service { get; set; }
+
+    [Inject]
+    public IService[] Services1 { get; set; }
+
+    [Inject]
+    public IEnumerable<IService> Services2 { get; set; }
 
     [Export]
     [InjectMembers]
     public CustomResource Resource { get; set; }
 
     [Inject]
-    public void Inject(IService service)
+    public void Inject(IService service, IService[] services1, IEnumerable<IService> services2)
     {
         // ***
     }

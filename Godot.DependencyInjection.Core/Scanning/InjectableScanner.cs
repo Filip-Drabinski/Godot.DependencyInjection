@@ -1,5 +1,8 @@
 ﻿using Godot.DependencyInjection.Attributes;
 using Godot.DependencyInjection.Scanning.Models;
+using Godot.DependencyInjection.Scanning.Models.Member;
+using Godot.DependencyInjection.Scanning.Models.MethodParameter;
+using Godot.DependencyInjection.Scanning.Models.MethodParameterMetadata;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -74,12 +77,12 @@ internal static partial class InjectionScanner
     private static MethodMetadata ProcessMethod(MethodInfo method, Type requiredAttributeType)
     {
         var parameters = method.GetParameters();
-        var methodParametersMetadata = new MethodParameterMetadata[parameters.Length];
+        var methodParametersMetadata = new IMethodParameterMetadata[parameters.Length];
 
         for (int i = 0; i < parameters.Length; i++)
         {
             var isRequired = parameters[i].CustomAttributes.Any(x => x.AttributeType == requiredAttributeType);
-            methodParametersMetadata[i] = new MethodParameterMetadata(isRequired, parameters[i].ParameterType);
+            methodParametersMetadata[i] = MethodParameterMetadataFactory.CreateMethodParameterMetadata(isRequired, parameters[i].ParameterType);
         }
 
         var metadata = new MethodMetadata(method, methodParametersMetadata);
@@ -88,12 +91,12 @@ internal static partial class InjectionScanner
     #endregion
     
     #region Members
-    private static (MemberMetadata[], NestedInjectionMetadata[]) GetMembersMetadata(PropertyInfo[] properties, FieldInfo[] fields)
+    private static (IMemberMetadata[], NestedInjectionMetadata[]) GetMembersMetadata(PropertyInfo[] properties, FieldInfo[] fields)
     {
 
         if (properties.Length == 0 && fields.Length == 0)
         {
-            return (Array.Empty<MemberMetadata>(), Array.Empty<NestedInjectionMetadata>());
+            return (Array.Empty<IMemberMetadata>(), Array.Empty<NestedInjectionMetadata>());
         }
         else if (properties.Length != 0 && fields.Length == 0)
         {
@@ -109,9 +112,9 @@ internal static partial class InjectionScanner
         return result;
     }
 
-    private static (MemberMetadata[], NestedInjectionMetadata[]) ProcessPropertiesAndFields(PropertyInfo[] properties, FieldInfo[] fields)
+    private static (IMemberMetadata[], NestedInjectionMetadata[]) ProcessPropertiesAndFields(PropertyInfo[] properties, FieldInfo[] fields)
     {
-        var membersMetadata = new List<MemberMetadata>(properties.Length + fields.Length);
+        var membersMetadata = new List<IMemberMetadata>(properties.Length + fields.Length);
         var nestedInjectionMetadata = new List<NestedInjectionMetadata>(properties.Length + fields.Length);
 
         for (int i = 0; i < properties.Length; i++)
@@ -121,7 +124,7 @@ internal static partial class InjectionScanner
 
             if (memberAttribute is not null)
             {
-                var memberMetadata = new MemberMetadata(properties[i].PropertyType, properties[i].SetValue, memberAttribute.IsRequired);
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(properties[i].PropertyType, properties[i].SetValue, memberAttribute.IsRequired);
                 membersMetadata.Add(memberMetadata);
             }
             else if (nestedAttribute is not null)
@@ -138,7 +141,7 @@ internal static partial class InjectionScanner
 
             if (memberAttribute is not null)
             {
-                var memberMetadata = new MemberMetadata(fields[i].FieldType, fields[i].SetValue, memberAttribute.IsRequired);
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(fields[i].FieldType, fields[i].SetValue, memberAttribute.IsRequired);
                 membersMetadata.Add(memberMetadata);
             }
             else if (nestedAttribute is not null)
@@ -150,9 +153,9 @@ internal static partial class InjectionScanner
         return (membersMetadata.ToArray(), nestedInjectionMetadata.ToArray());
     }
 
-    private static (MemberMetadata[], NestedInjectionMetadata[]) ProcessPropertiesOnly(PropertyInfo[] properties)
+    private static (IMemberMetadata[], NestedInjectionMetadata[]) ProcessPropertiesOnly(PropertyInfo[] properties)
     {
-        var membersMetadata = new List<MemberMetadata>(properties.Length);
+        var membersMetadata = new List<IMemberMetadata>(properties.Length);
         var nestedInjectionMetadata = new List<NestedInjectionMetadata>(properties.Length);
 
         for (int i = 0; i < properties.Length; i++)
@@ -162,7 +165,7 @@ internal static partial class InjectionScanner
 
             if (memberAttribute is not null)
             {
-                var memberMetadata = new MemberMetadata(properties[i].PropertyType, properties[i].SetValue, memberAttribute.IsRequired);
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(properties[i].PropertyType, properties[i].SetValue, memberAttribute.IsRequired);
                 membersMetadata.Add(memberMetadata);
             }
             else if (nestedAttribute is not null)
@@ -175,9 +178,9 @@ internal static partial class InjectionScanner
         return (membersMetadata.ToArray(), nestedInjectionMetadata.ToArray());
     }
 
-    private static (MemberMetadata[], NestedInjectionMetadata[]) ProcessFieldsOnly(FieldInfo[] fields)
+    private static (IMemberMetadata[], NestedInjectionMetadata[]) ProcessFieldsOnly(FieldInfo[] fields)
     {
-        var membersMetadata = new List<MemberMetadata>(fields.Length);
+        var membersMetadata = new List<IMemberMetadata>(fields.Length);
         var nestedInjectionMetadata = new List<NestedInjectionMetadata>(fields.Length);
 
         for (int i = 0; i < fields.Length; i++)
@@ -187,7 +190,7 @@ internal static partial class InjectionScanner
 
             if (memberAttribute is not null)
             {
-                var memberMetadata = new MemberMetadata(fields[i].FieldType, fields[i].SetValue, memberAttribute.IsRequired);
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(fields[i].FieldType, fields[i].SetValue, memberAttribute.IsRequired);
                 membersMetadata.Add(memberMetadata);
             }
             else if (nestedAttribute is not null)
