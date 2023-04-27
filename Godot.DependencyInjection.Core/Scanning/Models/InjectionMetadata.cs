@@ -1,15 +1,16 @@
 ﻿using System.Diagnostics;
+using Godot.DependencyInjection.Scanning.Models.Member;
 
 namespace Godot.DependencyInjection.Scanning.Models;
 
 [DebuggerDisplay("{DebugDisplay(),nq}")]
 internal struct InjectionMetadata
 {
-    public MemberMetadata[] members;
+    public IMemberMetadata[] members;
     public MethodMetadata[] methods;
     public NestedInjectionMetadata[] nestedInjections;
 
-    public InjectionMetadata(MemberMetadata[] members, MethodMetadata[] methods, NestedInjectionMetadata[] nestedInjections)
+    public InjectionMetadata(IMemberMetadata[] members, MethodMetadata[] methods, NestedInjectionMetadata[] nestedInjections)
     {
         this.members = members;
         this.methods = methods;
@@ -32,7 +33,7 @@ internal struct InjectionMetadata
     {
         return $@"
     {{
-        ""members"":[{string.Join(",", members)}
+        ""members"":[{string.Join(",", (object?[]) members)}
         ],
         ""methods"":[{string.Join(",", methods)}
         ],

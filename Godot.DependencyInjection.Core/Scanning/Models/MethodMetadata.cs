@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Godot.DependencyInjection.Scanning.Models.MethodParameterMetadata;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Godot.DependencyInjection.Scanning.Models;
@@ -7,9 +8,9 @@ namespace Godot.DependencyInjection.Scanning.Models;
 internal struct MethodMetadata
 {
     public MethodInfo methodInfo;
-    public MethodParameterMetadata[] parameters;
+    public IMethodParameterMetadata[] parameters;
 
-    public MethodMetadata(MethodInfo methodInfo, MethodParameterMetadata[] parameters)
+    public MethodMetadata(MethodInfo methodInfo, IMethodParameterMetadata[] parameters)
     {
         this.methodInfo = methodInfo;
         this.parameters = parameters;
@@ -29,7 +30,7 @@ internal struct MethodMetadata
         return $@"
             {{
                 ""type"": ""{methodInfo.Name}"",
-                ""parameters"": [{string.Join(',', parameters)}
+                ""parameters"": [{string.Join(',', (object?[]) parameters)}
                 ]
             }}";
     }

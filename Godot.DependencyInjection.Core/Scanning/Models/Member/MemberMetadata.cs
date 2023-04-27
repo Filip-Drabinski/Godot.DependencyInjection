@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
-namespace Godot.DependencyInjection.Scanning.Models;
+namespace Godot.DependencyInjection.Scanning.Models.Member;
 
 [DebuggerDisplay("{DebugDisplay(),nq}")]
-internal struct MemberMetadata
+internal struct MemberMetadata : IMemberMetadata
 {
     public delegate void MemberSetter(object? instance, object? value);
     public Type serviceType;
@@ -17,8 +17,9 @@ internal struct MemberMetadata
         this.memberSetter = memberSetter;
         this.isRequired = isRequired;
     }
-
-    internal void Inject(IServiceProvider serviceProvider, object instance)
+    
+    /// <inheritdoc/>
+    public void Inject(IServiceProvider serviceProvider, object instance)
     {
         var service = isRequired
             ? serviceProvider.GetRequiredService(serviceType)
@@ -34,8 +35,11 @@ internal struct MemberMetadata
                 ""isRequired"": {isRequired.ToString().ToLower()}
             }}";
     }
-    internal string DebugDisplay()
+    
+    /// <inheritdoc/>
+    public string DebugDisplay()
     {
         return $@"{serviceType.FullName}, isRequired: {isRequired}";
     }
+
 }
