@@ -58,11 +58,11 @@ public partial class RegularNode : Node2D
     }
     ```
 2. Add the script to Project -> Project Settings -> Autoload.
-3. Create a node and script for dependency registration:
+3. Create a `Node` and script for dependency registration:
     ```csharp
-    public partial class DependencyRegistrationNode : IServicesConfigurator
+    public partial class DependencyRegistrationNode : Node, IServicesConfigurator
     {
-        public override void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddGodotServices();
             services.AddTransient<IService, Service>();
