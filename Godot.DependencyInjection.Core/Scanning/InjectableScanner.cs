@@ -32,7 +32,7 @@ internal static partial class InjectionScanner
 
     private static InjectionMetadata? ProcessType(Type type)
     {
-        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic);
+        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         var properties = type.GetProperties();
         var fields = type.GetFields();
 
