@@ -76,10 +76,15 @@ public partial class RegularNode : Node2D
 
 Please note that this project is in its early stages of development and may require significant improvements. The framework is functional but may not be suitable for production use in its current state. Any feedback, suggestions, or contributions to improve the framework are highly appreciated.
 
+## Contributing
+
+I'm currently in the process of reevaluating the architecture and scope of the project, so only pull requests containing changes to documentation might be merged. If you have any ideas for code improvements, please create a new issue instead.
+
 
 ## Support
 
 If you have any questions, issues, or suggestions, please create a new issue on the GitHub repository.
+
 
 ## License
 This project is licensed under the MIT License. See the  [LICENSE](license) file for more information.
