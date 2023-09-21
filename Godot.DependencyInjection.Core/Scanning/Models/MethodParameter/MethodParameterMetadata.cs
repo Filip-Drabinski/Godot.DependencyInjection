@@ -5,20 +5,20 @@ using System.Diagnostics;
 namespace Godot.DependencyInjection.Scanning.Models.MethodParameter;
 
 [DebuggerDisplay("{DebugDisplay(),nq}")]
-internal struct MethodParameterMetadata : IMethodParameterMetadata
+internal readonly struct MethodParameterMetadata : IMethodParameterMetadata
 {
-    public bool isRequired;
-    public Type parameterType;
+    private readonly bool _isRequired;
+    private readonly Type _parameterType;
     public MethodParameterMetadata(bool isRequired, Type parameterType)
     {
-        this.isRequired = isRequired;
-        this.parameterType = parameterType;
+        this._isRequired = isRequired;
+        this._parameterType = parameterType;
     }
     public object? GetService(IServiceProvider serviceProvider)
     {
-        var service = isRequired
-        ? serviceProvider.GetRequiredService(parameterType)
-        : serviceProvider.GetService(parameterType);
+        var service = _isRequired
+        ? serviceProvider.GetRequiredService(_parameterType)
+        : serviceProvider.GetService(_parameterType);
 
         return service;
     }
@@ -28,12 +28,12 @@ internal struct MethodParameterMetadata : IMethodParameterMetadata
     {
         return $@"
                     {{
-                        ""type"": ""{parameterType.FullName}"",
-                        ""isRequired"": {isRequired.ToString().ToLower()}
+                        ""type"": ""{_parameterType.FullName}"",
+                        ""isRequired"": {_isRequired.ToString().ToLower()}
                     }}";
     }
     public string DebugDisplay()
     {
-        return $@"{parameterType.FullName}({isRequired})";
+        return $@"{_parameterType.FullName}({_isRequired})";
     }
 }
