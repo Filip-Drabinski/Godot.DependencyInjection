@@ -8,13 +8,13 @@ internal readonly struct InjectionMetadata
 {
     private readonly IMemberMetadata[] _members;
     private readonly MethodMetadata[] _methods;
-    private readonly NestedInjectionMetadata[] _nestedInjections;
+    internal readonly NestedInjectionMetadata[] nestedInjections;
 
     public InjectionMetadata(IMemberMetadata[] members, MethodMetadata[] methods, NestedInjectionMetadata[] nestedInjections)
     {
         _members = members;
         _methods = methods;
-        _nestedInjections = nestedInjections;
+        this.nestedInjections = nestedInjections;
     }
 
     public void Inject(IServiceProvider serviceProvider, object instance)
@@ -37,12 +37,12 @@ internal readonly struct InjectionMetadata
         ],
         ""methods"":[{string.Join(",", _methods)}
         ],
-        ""nestedInjections"":[{string.Join(",", _nestedInjections)}
+        ""nestedInjections"":[{string.Join(",", nestedInjections)}
         ],
     }}";
     }
     internal string DebugDisplay()
     {
-        return $@"members: {_members.Length}, methods: {_methods.Length}, nestedInjections: {_nestedInjections.Length}";
+        return $@"members: {_members.Length}, methods: {_methods.Length}, nestedInjections: {nestedInjections.Length}";
     }
 }
