@@ -4,28 +4,28 @@ using Godot.DependencyInjection.Scanning.Models.Member;
 namespace Godot.DependencyInjection.Scanning.Models;
 
 [DebuggerDisplay("{DebugDisplay(),nq}")]
-internal struct InjectionMetadata
+internal readonly struct InjectionMetadata
 {
-    public IMemberMetadata[] members;
-    public MethodMetadata[] methods;
-    public NestedInjectionMetadata[] nestedInjections;
+    private readonly IMemberMetadata[] _members;
+    private readonly MethodMetadata[] _methods;
+    private readonly NestedInjectionMetadata[] _nestedInjections;
 
     public InjectionMetadata(IMemberMetadata[] members, MethodMetadata[] methods, NestedInjectionMetadata[] nestedInjections)
     {
-        this.members = members;
-        this.methods = methods;
-        this.nestedInjections = nestedInjections;
+        _members = members;
+        _methods = methods;
+        _nestedInjections = nestedInjections;
     }
 
     public void Inject(IServiceProvider serviceProvider, object instance)
     {
-        for (int i = 0; i < members.Length; i++)
+        for (int i = 0; i < _members.Length; i++)
         {
-            members[i].Inject(serviceProvider, instance);
+            _members[i].Inject(serviceProvider, instance);
         }
-        for (int i = 0; i < methods.Length; i++)
+        for (int i = 0; i < _methods.Length; i++)
         {
-            methods[i].Inject(serviceProvider, instance);
+            _methods[i].Inject(serviceProvider, instance);
         }
     }
 
@@ -33,16 +33,16 @@ internal struct InjectionMetadata
     {
         return $@"
     {{
-        ""members"":[{string.Join(",", (object?[]) members)}
+        ""members"":[{string.Join(",", (object?[]) _members)}
         ],
-        ""methods"":[{string.Join(",", methods)}
+        ""methods"":[{string.Join(",", _methods)}
         ],
-        ""nestedInjections"":[{string.Join(",", nestedInjections)}
+        ""nestedInjections"":[{string.Join(",", _nestedInjections)}
         ],
     }}";
     }
     internal string DebugDisplay()
     {
-        return $@"members: {members.Length}, methods: {methods.Length}, nestedInjections: {nestedInjections.Length}";
+        return $@"members: {_members.Length}, methods: {_methods.Length}, nestedInjections: {_nestedInjections.Length}";
     }
 }
