@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Godot.DependencyInjection;
 
-    public abstract partial class DependencyInjectionManagerNode : Node
+public abstract partial class DependencyInjectionManagerNode : Node
 {
     private InjectionService _injectionService = null!;
 

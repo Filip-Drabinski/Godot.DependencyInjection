@@ -20,8 +20,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Godot.SourceGenerators" Version="4.0.2" />
-		<PackageReference Include="GodotSharp" Version="4.0.2" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 	</ItemGroup>
 

@@ -8,9 +8,9 @@ namespace Godot.DependencyInjection.Injection;
 /// <summary>
 /// Represents a service that handles dependency injection for nodes.
 /// </summary>
-internal class InjectionService
+public class InjectionService
 {
-    public static readonly Dictionary<Type, InjectionMetadata> Metadata;
+    private static readonly Dictionary<Type, InjectionMetadata> Metadata;
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
@@ -33,7 +33,7 @@ internal class InjectionService
     /// Injects dependencies into the specified node.
     /// </summary>
     /// <param name="node">The node to inject dependencies into.</param>
-    public void InjectDependencies(Node node)
+    public void InjectDependencies(object node)
     {
         if (node.GetType().GetCustomAttribute<IgnoreDependencyInjectionAttribute>() is not null)
         {
@@ -74,7 +74,7 @@ internal class InjectionService
     ""metadata"": {x.Value}
 }}");
         var json = $@"[{string.Join(',', SerializedItems)}]";
-        GD.Print(json);
+        //GD.Print(json);
     }
 
 }
