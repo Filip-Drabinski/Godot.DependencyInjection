@@ -5,36 +5,36 @@ using static Godot.DependencyInjection.Scanning.Models.Member.MemberMetadata;
 namespace Godot.DependencyInjection.Scanning.Models.Member;
 
 [DebuggerDisplay("{DebugDisplay(),nq}")]
-internal struct MemberEnumerableMetadata : IMemberMetadata
+internal readonly struct MemberEnumerableMetadata : IMemberMetadata
 {
-    public Type serviceType;
-    public MemberSetter memberSetter;
+    private readonly Type _serviceType;
+    private readonly MemberSetter _memberSetter;
 
     public MemberEnumerableMetadata(Type serviceType, MemberSetter memberSetter)
     {
-        this.serviceType = serviceType;
-        this.memberSetter = memberSetter;
+        _serviceType = serviceType;
+        _memberSetter = memberSetter;
     }
 
     /// <inheritdoc/>
     public void Inject(IServiceProvider serviceProvider, object instance)
     {
-        var services = serviceProvider.GetServicesEnumerable(serviceType);
-        memberSetter.Invoke(instance, services);
+        var services = serviceProvider.GetServicesEnumerable(_serviceType);
+        _memberSetter.Invoke(instance, services);
     }
 
     public override string ToString()
     {
         return $@"
             {{
-                ""type"": ""System.Collections.Generic.IEnumerable<{serviceType.FullName}>"",
+                ""type"": ""System.Collections.Generic.IEnumerable<{_serviceType.FullName}>"",
             }}";
     }
 
     /// <inheritdoc/>
     public string DebugDisplay()
     {
-        return $@"System.Collections.Generic.IEnumerable<{serviceType.FullName}>";
+        return $@"System.Collections.Generic.IEnumerable<{_serviceType.FullName}>";
     }
 
 }
