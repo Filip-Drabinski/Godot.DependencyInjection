@@ -18,7 +18,8 @@ public class InjectionService
     /// </summary>
     static InjectionService()
     {
-        Metadata = InjectionScanner.CollectMetadata();
+        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        Metadata = InjectionScanner.CollectMetadata(assemblies);
     }
     /// <summary>
     /// Initializes a new instance of the <see cref="InjectionService"/> class.
