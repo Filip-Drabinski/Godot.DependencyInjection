@@ -17,7 +17,7 @@ public abstract partial class DependencyInjectionManagerNode : Node
 
         (_injectionService, var nodesToInject) = InjectionServiceFactory.Create(new NodeWrapper(tree.Root));
 
-        var unpackedNodes = nodesToInject.Select(x => ((NodeWrapper)x).node);
+        var unpackedNodes = nodesToInject.Select(x => ((NodeWrapper)x).Node);
         foreach (var node in unpackedNodes)
         {
             _injectionService.InjectDependencies(node);

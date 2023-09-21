@@ -4,6 +4,7 @@ namespace Godot.DependencyInjection.Injection;
 
 public interface INodeWrapper
 {
+    object RawNode { get; }
     IEnumerable<INodeWrapper> GetChildren();
 }
 
@@ -45,7 +46,7 @@ public static class InjectionServiceFactory
         while (queue.TryDequeue(out var element))
         {
             nodesToInject.Add(element);
-            if (element is IServicesConfigurator servicesConfigurator)
+            if (element.RawNode is IServicesConfigurator servicesConfigurator)
             {
                 configurators.Add(servicesConfigurator);
             }
