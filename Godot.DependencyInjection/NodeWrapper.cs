@@ -4,15 +4,17 @@ namespace Godot.DependencyInjection;
 
 internal readonly struct NodeWrapper : INodeWrapper
 {
-    public readonly Node node;
+    public object RawNode => Node;
+
+    public readonly Node Node;
 
     public NodeWrapper(Node node)
     {
-        this.node = node;
+        this.Node = node;
     }
 
     public IEnumerable<INodeWrapper> GetChildren()
     {
-        return node.GetChildren(true).Select<Node, INodeWrapper>(x => new NodeWrapper(x));
+        return Node.GetChildren(true).Select<Node, INodeWrapper>(x => new NodeWrapper(x));
     }
 }
