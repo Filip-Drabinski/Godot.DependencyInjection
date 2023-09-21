@@ -1,30 +1,21 @@
-﻿using Godot.DependencyInjection.Injection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Godot.DependencyInjection;
+namespace Godot.DependencyInjection.Injection;
 
-    public abstract partial class DependencyInjectionManagerNode : Node
+public interface INodeWrapper
 {
-    private InjectionService _injectionService = null!;
+    IEnumerable<INodeWrapper> GetChildren();
+}
 
-    /// <summary>
-    /// Called when the node is ready.
-    /// </summary>
-    public override void _Ready()
+public static class InjectionServiceFactory
+{
+    public static (InjectionService injectionService, List<INodeWrapper> nodesToInject) Create(INodeWrapper sceneRootNode)
     {
-        var tree = GetTree();
-        var nodeLists = ProcessInitialNodes(tree);
-        ServiceProvider serviceProvider = BuildServiceProvider(nodeLists.configurators);
-        _injectionService = new InjectionService(serviceProvider);
-
-        foreach (var node in nodeLists.nodesToInject)
-        {
-            _injectionService.InjectDependencies(node);
-        }
-
-        tree.NodeAdded += _injectionService.InjectDependencies;
+        var (nodesToInject, configurators) = ProcessInitialNodes(sceneRootNode);
+        ServiceProvider serviceProvider = BuildServiceProvider(configurators);
+        var injectionService = new InjectionService(serviceProvider);
+        return (injectionService: injectionService, nodesToInject: nodesToInject);
     }
-
     /// <summary>
     /// Registers services from nodes implementing <see cref="IServicesConfigurator"/>
     /// </summary>
@@ -40,17 +31,16 @@ namespace Godot.DependencyInjection;
         var serviceProvider = services.BuildServiceProvider();
         return serviceProvider;
     }
-
     /// <summary>
     /// Processes the initial nodes in the scene tree.
     /// </summary>
-    /// <param name="tree">The scene tree to process.</param>
-    private (List<Node> nodesToInject, List<IServicesConfigurator> configurators) ProcessInitialNodes(SceneTree tree)
+    /// <param name="sceneRootNode">root of The scene tree to process.</param>
+    private static (List<INodeWrapper> nodesToInject, List<IServicesConfigurator> configurators) ProcessInitialNodes(INodeWrapper sceneRootNode)
     {
-        var nodesToInject = new List<Node>();
+        var nodesToInject = new List<INodeWrapper>();
         var configurators = new List<IServicesConfigurator>();
-        var queue = new Queue<Node>();
-        queue.Enqueue(tree.Root);
+        var queue = new Queue<INodeWrapper>();
+        queue.Enqueue(sceneRootNode);
 
         while (queue.TryDequeue(out var element))
         {
@@ -60,7 +50,7 @@ namespace Godot.DependencyInjection;
                 configurators.Add(servicesConfigurator);
             }
 
-            var children = element.GetChildren(true);
+            var children = element.GetChildren();
             foreach (var child in children)
             {
                 queue.Enqueue(child);
