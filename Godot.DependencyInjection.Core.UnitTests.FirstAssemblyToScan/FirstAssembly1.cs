@@ -13,7 +13,7 @@ public class FirstAssembly1
     public Guid Guid { get; set; }
 
     [InjectMembers]
-    public FirstAssembly2 FirstAssembly2 { get; set; }
+    public FirstAssembly2 FirstAssembly2 { get; set; } = null!;
 
     public Guid guid;
     public Guid guid2;

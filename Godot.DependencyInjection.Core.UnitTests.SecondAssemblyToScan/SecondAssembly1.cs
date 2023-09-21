@@ -7,7 +7,7 @@ public class SecondAssembly1
     public Guid Guid { get; set; }
 
     [InjectMembers]
-    public SecondAssembly2 SecondAssembly2 { get; set; }
+    public SecondAssembly2 SecondAssembly2 { get; set; } = null!;
 
     public Guid guid;
     public Guid guid2;
