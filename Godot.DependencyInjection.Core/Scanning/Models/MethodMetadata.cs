@@ -5,37 +5,37 @@ using System.Reflection;
 namespace Godot.DependencyInjection.Scanning.Models;
 
 [DebuggerDisplay("{DebugDisplay(),nq}")]
-internal struct MethodMetadata
+internal readonly struct MethodMetadata
 {
-    public MethodInfo methodInfo;
-    public IMethodParameterMetadata[] parameters;
+    private readonly MethodInfo _methodInfo;
+    private readonly IMethodParameterMetadata[] _parameters;
 
     public MethodMetadata(MethodInfo methodInfo, IMethodParameterMetadata[] parameters)
     {
-        this.methodInfo = methodInfo;
-        this.parameters = parameters;
+        _methodInfo = methodInfo;
+        _parameters = parameters;
     }
 
     internal void Inject(IServiceProvider serviceProvider, object instance)
     {
-        object?[] parametersValue = new object?[parameters.Length];
-        for (int i = 0; i < parameters.Length; i++)
+        var parametersValue = new object?[_parameters.Length];
+        for (var i = 0; i < _parameters.Length; i++)
         {
-            parametersValue[i] = parameters[i].GetService(serviceProvider);
+            parametersValue[i] = _parameters[i].GetService(serviceProvider);
         }
-        methodInfo.Invoke(instance, parametersValue);
+        _methodInfo.Invoke(instance, parametersValue);
     }
     public override string ToString()
     {
         return $@"
             {{
-                ""type"": ""{methodInfo.Name}"",
-                ""parameters"": [{string.Join(',', (object?[]) parameters)}
+                ""type"": ""{_methodInfo.Name}"",
+                ""parameters"": [{string.Join(',', (object?[]) _parameters)}
                 ]
             }}";
     }
     internal string DebugDisplay()
     {
-        return $@"{methodInfo.Name}({string.Join(", ", parameters.Select(x => x.DebugDisplay()))})";
+        return $@"{_methodInfo.Name}({string.Join(", ", _parameters.Select(x => x.DebugDisplay()))})";
     }
 }
