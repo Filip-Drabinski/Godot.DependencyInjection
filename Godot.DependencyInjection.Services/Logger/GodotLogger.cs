@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Xml.Linq;
 using Microsoft.Extensions.Logging;
 
 namespace Godot.DependencyInjection.Services.Logger;
@@ -23,8 +24,7 @@ internal sealed class GodotLogger : ILogger
     public bool IsEnabled(LogLevel logLevel)
     {
         // If the filter is null, everything is enabled
-        // unless the debugger is not attached
-        return Debugger.IsAttached && logLevel != LogLevel.None;
+        return logLevel != LogLevel.None;
     }
 
     /// <inheritdoc />
@@ -50,17 +50,19 @@ internal sealed class GodotLogger : ILogger
             return;
         }
 
-        message = $"{logLevel}: {message}";
+        message = $"{logLevel}: {_name}: {message}";
 
         if (exception != null)
         {
             message += System.Environment.NewLine + System.Environment.NewLine + exception;
         }
-
-        GodotWriteLine(message, _name);
+        PrintMessage(logLevel, message);
     }
-    private static void GodotWriteLine(string message, string name)
+    private static void PrintMessage(LogLevel logLevel, string message)
     {
-        GD.Print(message);
+        if (logLevel is LogLevel.Error or LogLevel.Critical)
+            GD.PrintErr(message);
+        else
+            GD.Print(message);
     }
 }

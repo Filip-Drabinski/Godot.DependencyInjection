@@ -1,5 +1,6 @@
 ﻿using Godot.DependencyInjection.Services.Input;
 using Godot.DependencyInjection.Services.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -17,9 +18,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IInputService, InputService>();
             return services;
         }
-        public static IServiceCollection AddGodotLogger(this IServiceCollection services)
+        public static IServiceCollection AddGodotLogger(this IServiceCollection services, Action<ILoggingBuilder>? configure = null)
         {
-            services.AddLogging(x => x.AddGodot());
+            services.AddLogging(x =>
+            {
+                x.AddGodot();
+                configure?.Invoke(x);
+            });
             return services;
         }
         
