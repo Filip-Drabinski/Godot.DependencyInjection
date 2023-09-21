@@ -9,6 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godot.DependencyInjection.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godot.DependencyInjection.Services", "Godot.DependencyInjection.Services\Godot.DependencyInjection.Services.csproj", "{AC1280C1-8CDD-47DD-8CDD-448A52516C44}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godot.DependencyInjection.Core.UnitTests", "Godot.DependencyInjection.Core.UnitTests\Godot.DependencyInjection.Core.UnitTests.csproj", "{0C459663-ADE8-49CD-B08D-72D5C23F2C60}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DE678A7C-28F1-4E78-A835-AC9C61D947B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godot.DependencyInjection.Core.UnitTests.FirstAssemblyToScan", "Godot.DependencyInjection.Core.UnitTests.FirstAssemblyToScan\Godot.DependencyInjection.Core.UnitTests.FirstAssemblyToScan.csproj", "{DBD8BB8A-E93F-49FE-BCEA-53C9401BEBDD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godot.DependencyInjection.Core.UnitTests.SecondAssemblyToScan", "Godot.DependencyInjection.Core.UnitTests.SecondAssemblyToScan\Godot.DependencyInjection.Core.UnitTests.SecondAssemblyToScan.csproj", "{7FCB6E4D-9963-4E7A-A480-FCBD71B3CB3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,9 +42,32 @@ Global
 		{AC1280C1-8CDD-47DD-8CDD-448A52516C44}.Publish|Any CPU.Build.0 = Publish|Any CPU
 		{AC1280C1-8CDD-47DD-8CDD-448A52516C44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC1280C1-8CDD-47DD-8CDD-448A52516C44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C459663-ADE8-49CD-B08D-72D5C23F2C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C459663-ADE8-49CD-B08D-72D5C23F2C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C459663-ADE8-49CD-B08D-72D5C23F2C60}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{0C459663-ADE8-49CD-B08D-72D5C23F2C60}.Publish|Any CPU.Build.0 = Release|Any CPU
+		{0C459663-ADE8-49CD-B08D-72D5C23F2C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C459663-ADE8-49CD-B08D-72D5C23F2C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBD8BB8A-E93F-49FE-BCEA-53C9401BEBDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBD8BB8A-E93F-49FE-BCEA-53C9401BEBDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBD8BB8A-E93F-49FE-BCEA-53C9401BEBDD}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{DBD8BB8A-E93F-49FE-BCEA-53C9401BEBDD}.Publish|Any CPU.Build.0 = Release|Any CPU
+		{DBD8BB8A-E93F-49FE-BCEA-53C9401BEBDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBD8BB8A-E93F-49FE-BCEA-53C9401BEBDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FCB6E4D-9963-4E7A-A480-FCBD71B3CB3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FCB6E4D-9963-4E7A-A480-FCBD71B3CB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FCB6E4D-9963-4E7A-A480-FCBD71B3CB3D}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCB6E4D-9963-4E7A-A480-FCBD71B3CB3D}.Publish|Any CPU.Build.0 = Release|Any CPU
+		{7FCB6E4D-9963-4E7A-A480-FCBD71B3CB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCB6E4D-9963-4E7A-A480-FCBD71B3CB3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0C459663-ADE8-49CD-B08D-72D5C23F2C60} = {DE678A7C-28F1-4E78-A835-AC9C61D947B0}
+		{DBD8BB8A-E93F-49FE-BCEA-53C9401BEBDD} = {DE678A7C-28F1-4E78-A835-AC9C61D947B0}
+		{7FCB6E4D-9963-4E7A-A480-FCBD71B3CB3D} = {DE678A7C-28F1-4E78-A835-AC9C61D947B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D8F7CBA-B2F4-4BAE-B94F-B9C8799A03FD}

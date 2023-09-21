@@ -8,12 +8,11 @@ using System.Reflection;
 
 namespace Godot.DependencyInjection.Scanning;
 
-internal static partial class InjectionScanner
+internal static class InjectionScanner
 {
-    public static Dictionary<Type, InjectionMetadata> CollectMetadata()
+    public static Dictionary<Type, InjectionMetadata> CollectMetadata(Assembly[] assemblies)
     {
         var metadataDictionary = new Dictionary<Type, InjectionMetadata>();
-        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
         for (int assemblyIndex = 0; assemblyIndex < assemblies.Length; assemblyIndex++)
         {
             var allTypes = assemblies[assemblyIndex].GetTypes();
