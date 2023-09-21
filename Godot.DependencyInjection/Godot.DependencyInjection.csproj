@@ -5,6 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Configurations>Debug;Release;Publish</Configurations>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -18,11 +19,11 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+	<ItemGroup Condition="'$(Configuration)' == 'Publish'">
 		<PackageReference Include="Godot.DependencyInjection.Core" Version="0.3.0" />
 		<PackageReference Include="Godot.DependencyInjection.Services" Version="0.2.3" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)' != 'Release'">
+	<ItemGroup Condition="'$(Configuration)' != 'Publish'">
 		<ProjectReference Include="..\Godot.DependencyInjection.Core\Godot.DependencyInjection.Core.csproj" />
 		<ProjectReference Include="..\Godot.DependencyInjection.Services\Godot.DependencyInjection.Services.csproj" />
 	</ItemGroup>
