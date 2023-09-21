@@ -4,18 +4,18 @@ using System.Diagnostics;
 namespace Godot.DependencyInjection.Scanning.Models.MethodParameterMetadata;
 
 [DebuggerDisplay("{DebugDisplay(),nq}")]
-internal struct MethodArrayParameterMetadata : IMethodParameterMetadata
+internal readonly struct MethodArrayParameterMetadata : IMethodParameterMetadata
 {
-    public Type parameterType;
+    private readonly Type _parameterType;
 
     public MethodArrayParameterMetadata(Type parameterType)
     {
-        this.parameterType = parameterType;
+        _parameterType = parameterType;
     }
 
     public object? GetService(IServiceProvider serviceProvider)
     {
-        var services = serviceProvider.GetServicesArray(parameterType);
+        var services = serviceProvider.GetServicesArray(_parameterType);
         return services;
     }
 
@@ -23,12 +23,12 @@ internal struct MethodArrayParameterMetadata : IMethodParameterMetadata
     {
         return $@"
                     {{
-                        ""type"": ""{parameterType.FullName}[]"",
+                        ""type"": ""{_parameterType.FullName}[]"",
                     }}";
     }
 
     public string DebugDisplay()
     {
-        return $@"{parameterType.FullName}[]";
+        return $@"{_parameterType.FullName}[]";
     }
 }
