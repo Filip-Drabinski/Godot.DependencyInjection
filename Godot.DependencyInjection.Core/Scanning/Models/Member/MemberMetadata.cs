@@ -4,42 +4,43 @@ using System.Diagnostics;
 namespace Godot.DependencyInjection.Scanning.Models.Member;
 
 [DebuggerDisplay("{DebugDisplay(),nq}")]
-internal struct MemberMetadata : IMemberMetadata
+internal readonly struct MemberMetadata : IMemberMetadata
 {
     public delegate void MemberSetter(object? instance, object? value);
-    public Type serviceType;
-    public MemberSetter memberSetter;
-    public bool isRequired;
+
+    private readonly Type _serviceType;
+    private readonly MemberSetter _memberSetter;
+    private readonly bool _isRequired;
 
     public MemberMetadata(Type serviceType, MemberSetter memberSetter, bool isRequired)
     {
-        this.serviceType = serviceType;
-        this.memberSetter = memberSetter;
-        this.isRequired = isRequired;
+        _serviceType = serviceType;
+        _memberSetter = memberSetter;
+        _isRequired = isRequired;
     }
     
     /// <inheritdoc/>
     public void Inject(IServiceProvider serviceProvider, object instance)
     {
-        var service = isRequired
-            ? serviceProvider.GetRequiredService(serviceType)
-            : serviceProvider.GetService(serviceType);
-        memberSetter.Invoke(instance, service);
+        var service = _isRequired
+            ? serviceProvider.GetRequiredService(_serviceType)
+            : serviceProvider.GetService(_serviceType);
+        _memberSetter.Invoke(instance, service);
     }
 
     public override string ToString()
     {
         return $@"
             {{
-                ""type"": ""{serviceType.FullName}"",
-                ""isRequired"": {isRequired.ToString().ToLower()}
+                ""type"": ""{_serviceType.FullName}"",
+                ""isRequired"": {_isRequired.ToString().ToLower()}
             }}";
     }
     
     /// <inheritdoc/>
     public string DebugDisplay()
     {
-        return $@"{serviceType.FullName}, isRequired: {isRequired}";
+        return $@"{_serviceType.FullName}, isRequired: {_isRequired}";
     }
 
 }
