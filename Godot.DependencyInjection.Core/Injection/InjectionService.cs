@@ -63,18 +63,5 @@ public class InjectionService
             }
         }
     }
-    /// <summary>
-    /// Prints <see cref="Metadata"/> serialized to Json using <see cref="GD.Print"/>
-    /// </summary>
-    private static void DebugPrintMetadata()
-    {
-        var SerializedItems = Metadata.Select(x => $@"
-{{
-    ""type"": ""{x.Key.Name}"",
-    ""metadata"": {x.Value}
-}}");
-        var json = $@"[{string.Join(',', SerializedItems)}]";
-        //GD.Print(json);
-    }
 
 }

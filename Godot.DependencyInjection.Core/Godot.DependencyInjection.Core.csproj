@@ -11,7 +11,7 @@
 	<PropertyGroup>
 		<Title>Godot.DependencyInjection.Core</Title>
 		<RepositoryUrl>https://github.com/Filip-Drabinski/Godot.DependencyInjection</RepositoryUrl>
-		<VersionPrefix>0.2.3</VersionPrefix>
+		<VersionPrefix>0.3.0</VersionPrefix>
 		<Description>part of custom dependency injection for Godot game engine</Description>
 		<PackageProjectUrl>https://github.com/Filip-Drabinski/Godot.DependencyInjection/tree/main/Godot.DependencyInjection.Core</PackageProjectUrl>
 		<RepositoryType></RepositoryType>
