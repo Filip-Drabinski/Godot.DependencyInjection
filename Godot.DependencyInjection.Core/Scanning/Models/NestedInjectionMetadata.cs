@@ -3,11 +3,11 @@
 namespace Godot.DependencyInjection.Scanning.Models;
 
 [DebuggerDisplay("{DebugDisplay(),nq}")]
-internal struct NestedInjectionMetadata
+internal readonly struct NestedInjectionMetadata
 {
     public delegate object? MemberGetter(object? instance);
-    public Type nestedType;
-    public MemberGetter memberGetter;
+    internal readonly Type nestedType;
+    internal readonly MemberGetter memberGetter;
 
     public NestedInjectionMetadata(Type nestedType, MemberGetter memberGetter)
     {
