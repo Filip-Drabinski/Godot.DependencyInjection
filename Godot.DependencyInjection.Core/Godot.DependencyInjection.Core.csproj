@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<RootNamespace>Godot.DependencyInjection</RootNamespace>
+		<Configurations>Debug;Release;Publish</Configurations>
 	</PropertyGroup>
 
 	<PropertyGroup>
