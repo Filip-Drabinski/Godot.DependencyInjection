@@ -25,7 +25,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore /property:Configuration=Debug
     - name: Build
       run: dotnet build --no-restore
     - name: Test
