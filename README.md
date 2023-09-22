@@ -6,11 +6,11 @@ Godot.DependencyInjection is a lightweight and easy-to-use dependency injection 
 ## Features
 
 - Easy to set up and use
-- Supports property, field, and method injection
-- Provides member dependency injection for usage with resources
 - Utilizes standard C# dependency injection abstractions
+- Supports injection of: fields, properties and methods with any accessibility
+- built-in provider abstraction for retrieving any node from scene
+- Provides nested dependency injection for usage with resources
 - Supports transient, scoped, and singleton lifetimes
-
 
 ## Installation
 
@@ -25,29 +25,11 @@ using Godot.DependencyInjection.Services.Input;
 public partial class RegularNode : Node2D
 {
     [Inject]
-    public IInputService inputService;
-
-    [Inject]
-    public IService Service { get; set; }
-
-    [Inject]
-    public IService[] Services1 { get; set; }
-
-    [Inject]
-    public IEnumerable<IService> Services2 { get; set; }
-
-    [Export]
-    [InjectMembers]
-    public CustomResource Resource { get; set; }
-
-    [Inject]
-    public void Inject(IService service, IService[] services1, IEnumerable<IService> services2)
-    {
-        // ***
-    }
+    private IInputService _inputService;
+    // ***
 }
 ```
-
+[details](usage.md)
 
 ## Configuration
 
@@ -70,7 +52,6 @@ public partial class RegularNode : Node2D
     }
     ```
 4. Add dependency registration node to scene
-
 
 ## Remarks
 
