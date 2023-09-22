@@ -19,6 +19,9 @@ public abstract partial class DependencyInjectionManagerNode : Node
         {
             _injectionService.InjectDependencies(node);
         }
+
         tree.NodeAdded += _injectionService.InjectDependencies;
+        
+        tree.NodeRemoved += _injectionService.RemoveProviders;
     }
 }

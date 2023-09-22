@@ -53,6 +53,7 @@ public class InjectionService
                 continue;
             }
             metadata.Inject(_serviceProvider, element.instance);
+            metadata.AddProviders(_serviceProvider, element.instance);
             for (int i = 0; i < metadata.nestedInjections.Length; i++)
             {
                 var nestedType = metadata.nestedInjections[i].nestedType;
@@ -63,6 +64,15 @@ public class InjectionService
                 ));
             }
         }
+    }
+
+    public void RemoveProviders(object node)
+    {
+        if (!Metadata.TryGetValue(node.GetType(), out var metadata))
+        {
+            return;
+        }
+        metadata.RemoveProviders(_serviceProvider, node);
     }
 
 }

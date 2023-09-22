@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Godot.DependencyInjection.Scanning.Models.Member;
+using Godot.DependencyInjection.Scanning.Models.Provider;
 
 namespace Godot.DependencyInjection.Scanning.Models;
 
@@ -9,12 +10,15 @@ internal readonly struct InjectionMetadata
     internal readonly IMemberMetadata[] members;
     internal readonly MethodMetadata[] methods;
     internal readonly NestedInjectionMetadata[] nestedInjections;
+    internal readonly IProviderMetadata[] providersMetadata;
 
-    public InjectionMetadata(IMemberMetadata[] members, MethodMetadata[] methods, NestedInjectionMetadata[] nestedInjections)
+    public InjectionMetadata(IMemberMetadata[] members, MethodMetadata[] methods,
+        NestedInjectionMetadata[] nestedInjections, IProviderMetadata[] providersMetadata)
     {
         this.members = members;
         this.methods = methods;
         this.nestedInjections = nestedInjections;
+        this.providersMetadata = providersMetadata;
     }
 
     public void Inject(IServiceProvider serviceProvider, object instance)
@@ -26,6 +30,21 @@ internal readonly struct InjectionMetadata
         for (int i = 0; i < methods.Length; i++)
         {
             methods[i].Inject(serviceProvider, instance);
+        }
+    }
+
+    public void AddProviders(IServiceProvider serviceProvider, object instance)
+    {
+        for (int i = 0; i < methods.Length; i++)
+        {
+            providersMetadata[i].Add(serviceProvider, instance);
+        }
+    }
+    public void RemoveProviders(IServiceProvider serviceProvider, object instance)
+    {
+        for (int i = 0; i < methods.Length; i++)
+        {
+            providersMetadata[i].Remove(serviceProvider, instance);
         }
     }
 

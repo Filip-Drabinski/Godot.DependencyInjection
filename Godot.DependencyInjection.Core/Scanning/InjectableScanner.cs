@@ -5,6 +5,7 @@ using Godot.DependencyInjection.Scanning.Models.MethodParameter;
 using Godot.DependencyInjection.Scanning.Models.MethodParameterMetadata;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Godot.DependencyInjection.Scanning.Models.Provider;
 
 namespace Godot.DependencyInjection.Scanning;
 
@@ -31,10 +32,10 @@ internal static class InjectionScanner
 
     private static InjectionMetadata? ProcessType(Type type)
     {
-        var methods = type.GetMethods(BindingFlags.Instance  | BindingFlags.Public | BindingFlags.NonPublic);
+        var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        var fields = type.GetFields(BindingFlags.Instance  | BindingFlags.Public | BindingFlags.NonPublic);
-
+        var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var providersMetadata = GetProvidersMetadata(type);
         var methodsMetadata = GetMethodsMetadata(methods);
         var (membersMetadata, nestedInjections) = GetMembersMetadata(properties, fields);
 
@@ -46,8 +47,27 @@ internal static class InjectionScanner
         {
             return null;
         }
-        var result = new InjectionMetadata(membersMetadata, methodsMetadata, nestedInjections);
+        var result = new InjectionMetadata(
+            membersMetadata,
+            methodsMetadata,
+            nestedInjections,
+            providersMetadata
+        );
 
+        return result;
+    }
+
+    private static IProviderMetadata[] GetProvidersMetadata(Type type)
+    {
+        var providers = type.GetInterfaces()
+            .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(INodeProvider<>));
+        var result = providers.Select(providerType =>
+        {
+            var providedType = providerType.GetGenericArguments().First();
+            var metadataType =typeof(ProviderMetadata<,>).MakeGenericType(providerType, providedType);
+            var metadata = (IProviderMetadata)Activator.CreateInstance(metadataType)!;
+            return metadata;
+        }).ToArray();
         return result;
     }
 
@@ -88,7 +108,7 @@ internal static class InjectionScanner
         return metadata;
     }
     #endregion
-    
+
     #region Members
     private static (IMemberMetadata[], NestedInjectionMetadata[]) GetMembersMetadata(PropertyInfo[] properties, FieldInfo[] fields)
     {

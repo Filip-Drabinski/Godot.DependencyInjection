@@ -1,3 +1,4 @@
+using Godot.DependencyInjection.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Godot.DependencyInjection.Injection;
@@ -29,6 +30,9 @@ public static class InjectionServiceFactory
         {
             item.ConfigureServices(services);
         }
+
+        services.AddSingleton(typeof(IProviderManager<,>), typeof(ProviderManager<,>));
+
         var serviceProvider = services.BuildServiceProvider();
         return serviceProvider;
     }
