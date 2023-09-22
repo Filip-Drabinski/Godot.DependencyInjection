@@ -21,6 +21,7 @@ public class RegularNode
     // ***
 }
 ```
+* class members can be `readonly`
 ## nested injection:
 ```csharp
 //RegularNode.cs
@@ -58,10 +59,19 @@ public class CustomResource
 using Godot;
 using Godot.DependencyInjection;
 
-public class RegularNode: Node, IRegularNode, INodeProvider<LoggerTest>
+public class RegularNode: Node, IRegularNode, INodeProvider<RegularNode>
 {
     [Provided]
     private SecondNode _secondNode; 
+    private OtherNode _otherNode; 
+    private IInputService _inputService;
+
+    [Inject]
+    private void Inject(IInputService inputService,[Provided] OtherNode otherNode)
+    {
+        _inputService = inputService
+        _otherNode = otherNode
+    }
     // ***
     public void Provide(out RegularNode node)
     {
@@ -86,3 +96,26 @@ public class SecondNode: Node, INodeProvider<SecondNode>
 }
 ```
 * Generic parameter of INodeProvider can be anything
+
+# injection modifiers
+1. required services and provided values
+
+    ```csharp
+    //RegularNode.cs
+    using Godot;
+    using Godot.DependencyInjection.Attributes;
+    using Godot.DependencyInjection.Services.Input;
+
+    public class RegularNode: Node
+    {
+        [Inject(isRequired: true)]
+        private IInputService _inputService;
+
+        [Inject]
+        private void Inject([Required] IInputService inputService, [Provided(isRequired: true)] OtherNode otherNode)
+        {
+            _inputService = inputService
+            _otherNode = otherNode
+        }
+    }
+    ```
