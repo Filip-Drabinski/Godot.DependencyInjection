@@ -31,9 +31,9 @@ internal static class InjectionScanner
 
     private static InjectionMetadata? ProcessType(Type type)
     {
-        var methods = type.GetMethods();
-        var properties = type.GetProperties();
-        var fields = type.GetFields();
+        var methods = type.GetMethods(BindingFlags.Instance  | BindingFlags.Public | BindingFlags.NonPublic);
+        var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var fields = type.GetFields(BindingFlags.Instance  | BindingFlags.Public | BindingFlags.NonPublic);
 
         var methodsMetadata = GetMethodsMetadata(methods);
         var (membersMetadata, nestedInjections) = GetMembersMetadata(properties, fields);
