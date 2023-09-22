@@ -1,3 +1,4 @@
+using System.Linq;
 using Godot.DependencyInjection.Core.UnitTests.FirstAssemblyToScan;
 using Godot.DependencyInjection.Core.UnitTests.SecondAssemblyToScan;
 using Godot.DependencyInjection.Scanning;
@@ -14,8 +15,38 @@ public class InjectionScannerUnitTest
             typeof(FirstAssembly1).Assembly, 
             typeof(SecondAssembly1).Assembly,
         };
-        var res = InjectionScanner.CollectMetadata(assemblies);
+        var metadata = InjectionScanner.CollectMetadata(assemblies);
 
-        res.Should().NotBeNull();
+        metadata.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void InjectionScanner_CollectMetadata_AllAssembliesScanned()
+    {
+        var assemblies = new[]
+        {
+            typeof(FirstAssembly1).Assembly, 
+            typeof(SecondAssembly1).Assembly,
+        };
+
+        var metadata = InjectionScanner.CollectMetadata(assemblies);
+
+        metadata.ContainsKey(typeof(FirstAssembly1)).Should().Be(true);
+        metadata.ContainsKey(typeof(SecondAssembly1)).Should().Be(true);
+    }
+    [Fact]
+    public void InjectionScanner_CollectMetadata_AnyAccessibilityCollected()
+    {
+        var assemblies = new[]
+        {
+            typeof(FirstAssembly1).Assembly, 
+        };
+
+        var metadata = InjectionScanner.CollectMetadata(assemblies);
+        var typeMetadata = metadata[typeof(FirstAssembly1)];
+
+        typeMetadata.members.Should().HaveCount(6);
+        typeMetadata.methods.Should().HaveCount(3);
+        typeMetadata.nestedInjections.Should().HaveCount(3);
     }
 }
