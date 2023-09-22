@@ -7,15 +7,19 @@ namespace Godot.DependencyInjection.Scanning.Models.MethodParameterMetadata;
 internal readonly struct MethodEnumerableParameterMetadata : IMethodParameterMetadata
 {
     private readonly Type _parameterType;
+    private readonly bool _isProvided;
 
-    public MethodEnumerableParameterMetadata(Type parameterType)
+    public MethodEnumerableParameterMetadata(Type parameterType, bool isProvided)
     {
         _parameterType = parameterType;
+        _isProvided = isProvided;
     }
 
     public object? GetService(IServiceProvider serviceProvider)
     {
-        var services = serviceProvider.GetServicesEnumerable(_parameterType);
+        var services = _isProvided 
+            ? serviceProvider.GetProvidedEnumerable(_parameterType) 
+            : serviceProvider.GetServicesEnumerable(_parameterType);
         return services;
     }
 

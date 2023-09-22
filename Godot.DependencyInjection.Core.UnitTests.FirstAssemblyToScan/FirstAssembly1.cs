@@ -10,41 +10,41 @@ namespace Godot.DependencyInjection.Core.UnitTests.FirstAssemblyToScan;
 public class FirstAssembly1
 {
     [Inject]
-    public Guid GuidPublic { get; set; }
+    public string GuidPublic { get; set; }
     [InjectMembers]
-    public FirstAssembly2 FirstAssembly2Public { get; set; } = null!;
+    public FirstAssembly2 FirstAssembly2Public { get; set; } = new ();
 
     [Inject]
-    protected Guid GuidProtected { get; set; }
+    protected string GuidProtected { get; set; }
     [InjectMembers]
-    protected FirstAssembly2 FirstAssembly2Protected { get; set; } = null!;
+    protected FirstAssembly2 FirstAssembly2Protected { get; set; } = new();
     [InjectMembers]
 
     [Inject]
-    private Guid GuidPrivate { get; set; }
+    private string GuidPrivate { get; set; }
     [InjectMembers]
-    private FirstAssembly2 FirstAssembly2Private { get; set; } = null!;
+    private FirstAssembly2 FirstAssembly2Private { get; set; } = new();
 
     [Inject]
-    public Guid guidPublic;
+    public string guidPublic;
 
     [Inject]
-    protected Guid guidProtected;
+    protected string guidProtected;
 
     [Inject]
-    private Guid guidPrivate;
+    private string guidPrivate;
 
 
     [Inject]
-    public void InjectPublic(Guid guid)
+    public void InjectPublic(string guid)
     {
     }
     [Inject]
-    protected void InjectProtected(Guid guid)
+    protected void InjectProtected(string guid)
     {
     }
     [Inject]
-    private void InjectPrivate(Guid guid)
+    private void InjectPrivate(string guid)
     {
     }
 }

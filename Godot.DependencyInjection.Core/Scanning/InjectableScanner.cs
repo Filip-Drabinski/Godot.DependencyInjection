@@ -5,6 +5,7 @@ using Godot.DependencyInjection.Scanning.Models.MethodParameter;
 using Godot.DependencyInjection.Scanning.Models.MethodParameterMetadata;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Godot.DependencyInjection.Scanning.Models.Provider;
 
 namespace Godot.DependencyInjection.Scanning;
 
@@ -31,23 +32,43 @@ internal static class InjectionScanner
 
     private static InjectionMetadata? ProcessType(Type type)
     {
-        var methods = type.GetMethods(BindingFlags.Instance  | BindingFlags.Public | BindingFlags.NonPublic);
+        var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        var fields = type.GetFields(BindingFlags.Instance  | BindingFlags.Public | BindingFlags.NonPublic);
-
+        var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var providersMetadata = GetProvidersMetadata(type);
         var methodsMetadata = GetMethodsMetadata(methods);
         var (membersMetadata, nestedInjections) = GetMembersMetadata(properties, fields);
 
         if (
             methodsMetadata.Length == 0
             && membersMetadata.Length == 0
+            && providersMetadata.Length == 0
             && nestedInjections.Length == 0
             )
         {
             return null;
         }
-        var result = new InjectionMetadata(membersMetadata, methodsMetadata, nestedInjections);
+        var result = new InjectionMetadata(
+            membersMetadata,
+            methodsMetadata,
+            nestedInjections,
+            providersMetadata
+        );
 
+        return result;
+    }
+
+    private static IProviderMetadata[] GetProvidersMetadata(Type type)
+    {
+        var providers = type.GetInterfaces()
+            .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(INodeProvider<>));
+        var result = providers.Select(providerType =>
+        {
+            var providedType = providerType.GetGenericArguments().First();
+            var metadataType = typeof(ProviderMetadata<,>).MakeGenericType(providerType, providedType);
+            var metadata = (IProviderMetadata)Activator.CreateInstance(metadataType)!;
+            return metadata;
+        }).ToArray();
         return result;
     }
 
@@ -80,15 +101,17 @@ internal static class InjectionScanner
 
         for (int i = 0; i < parameters.Length; i++)
         {
-            var isRequired = parameters[i].CustomAttributes.Any(x => x.AttributeType == requiredAttributeType);
-            methodParametersMetadata[i] = MethodParameterMetadataFactory.CreateMethodParameterMetadata(isRequired, parameters[i].ParameterType);
+            var provided = parameters[i].GetCustomAttribute<ProvidedAttribute>();
+            var isRequired = parameters[i].CustomAttributes.Any(x => x.AttributeType == requiredAttributeType) || (provided?.IsRequired == true);
+            var isProvided = provided is not null;
+            methodParametersMetadata[i] = MethodParameterMetadataFactory.CreateMethodParameterMetadata(parameters[i].ParameterType, isRequired, isProvided: isProvided);
         }
 
         var metadata = new MethodMetadata(method, methodParametersMetadata);
         return metadata;
     }
     #endregion
-    
+
     #region Members
     private static (IMemberMetadata[], NestedInjectionMetadata[]) GetMembersMetadata(PropertyInfo[] properties, FieldInfo[] fields)
     {
@@ -119,11 +142,22 @@ internal static class InjectionScanner
         for (int i = 0; i < properties.Length; i++)
         {
             var memberAttribute = properties[i].GetCustomAttribute<InjectAttribute>();
+            var providedAttribute = properties[i].GetCustomAttribute<ProvidedAttribute>();
             var nestedAttribute = properties[i].GetCustomAttribute<InjectMembersAttribute>();
 
             if (memberAttribute is not null)
             {
-                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(properties[i].PropertyType, properties[i].SetValue, memberAttribute.IsRequired);
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(
+                    properties[i].PropertyType, 
+                    properties[i].SetValue, 
+                    memberAttribute.IsRequired,
+                    false
+                );
+                membersMetadata.Add(memberMetadata);
+            }
+            else if (providedAttribute is not null)
+            {
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(properties[i].PropertyType, properties[i].SetValue, providedAttribute.IsRequired, true);
                 membersMetadata.Add(memberMetadata);
             }
             else if (nestedAttribute is not null)
@@ -136,11 +170,29 @@ internal static class InjectionScanner
         for (int i = 0; i < fields.Length; i++)
         {
             var memberAttribute = fields[i].GetCustomAttribute<InjectAttribute>();
+            var providedAttribute = fields[i].GetCustomAttribute<ProvidedAttribute>();
             var nestedAttribute = fields[i].GetCustomAttribute<InjectMembersAttribute>();
 
             if (memberAttribute is not null)
             {
-                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(fields[i].FieldType, fields[i].SetValue, memberAttribute.IsRequired);
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(
+                    fields[i].FieldType,
+                    fields[i].SetValue,
+                    memberAttribute.IsRequired,
+                    false
+                );
+
+                membersMetadata.Add(memberMetadata);
+            }
+            else if (providedAttribute is not null)
+            {
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(
+                    fields[i].FieldType,
+                    fields[i].SetValue,
+                    providedAttribute.IsRequired,
+                    true
+                );
+
                 membersMetadata.Add(memberMetadata);
             }
             else if (nestedAttribute is not null)
@@ -160,11 +212,27 @@ internal static class InjectionScanner
         for (int i = 0; i < properties.Length; i++)
         {
             var memberAttribute = properties[i].GetCustomAttribute<InjectAttribute>();
+            var providedAttribute = properties[i].GetCustomAttribute<ProvidedAttribute>();
             var nestedAttribute = properties[i].GetCustomAttribute<InjectMembersAttribute>();
 
             if (memberAttribute is not null)
             {
-                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(properties[i].PropertyType, properties[i].SetValue, memberAttribute.IsRequired);
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(
+                    properties[i].PropertyType,
+                    properties[i].SetValue,
+                    memberAttribute.IsRequired,
+                    false
+                );
+                membersMetadata.Add(memberMetadata);
+            }
+            else if (providedAttribute is not null)
+            {
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(
+                    properties[i].PropertyType,
+                    properties[i].SetValue,
+                    providedAttribute.IsRequired,
+                    true
+                );
                 membersMetadata.Add(memberMetadata);
             }
             else if (nestedAttribute is not null)
@@ -185,11 +253,26 @@ internal static class InjectionScanner
         for (int i = 0; i < fields.Length; i++)
         {
             var memberAttribute = fields[i].GetCustomAttribute<InjectAttribute>();
+            var providedAttribute = fields[i].GetCustomAttribute<ProvidedAttribute>();
             var nestedAttribute = fields[i].GetCustomAttribute<InjectMembersAttribute>();
 
             if (memberAttribute is not null)
             {
-                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(fields[i].FieldType, fields[i].SetValue, memberAttribute.IsRequired);
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(fields[i].FieldType,
+                    fields[i].SetValue,
+                    memberAttribute.IsRequired,
+                    false
+                );
+                membersMetadata.Add(memberMetadata);
+            }
+            else if (providedAttribute is not null)
+            {
+                var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(
+                    fields[i].FieldType,
+                    fields[i].SetValue,
+                    providedAttribute.IsRequired,
+                    true
+                );
                 membersMetadata.Add(memberMetadata);
             }
             else if (nestedAttribute is not null)

@@ -1,6 +1,7 @@
 ﻿using Godot.DependencyInjection.Scanning.Models.MethodParameterMetadata;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using Godot.DependencyInjection.Scanning.Models.Shared;
 
 namespace Godot.DependencyInjection.Scanning.Models.MethodParameter;
 
@@ -8,19 +9,34 @@ namespace Godot.DependencyInjection.Scanning.Models.MethodParameter;
 internal readonly struct MethodParameterMetadata : IMethodParameterMetadata
 {
     private readonly bool _isRequired;
+    private readonly bool _isProvided;
     private readonly Type _parameterType;
-    public MethodParameterMetadata(bool isRequired, Type parameterType)
+    public MethodParameterMetadata(Type parameterType, bool isRequired, bool isProvided)
     {
         this._isRequired = isRequired;
+        _isProvided = isProvided;
         this._parameterType = parameterType;
     }
     public object? GetService(IServiceProvider serviceProvider)
     {
-        var service = _isRequired
-        ? serviceProvider.GetRequiredService(_parameterType)
-        : serviceProvider.GetService(_parameterType);
+        var service = _isProvided
+            ? GetProvidedService(serviceProvider)
+            : GetRegisteredService(serviceProvider);
 
         return service;
+    }
+
+    private object? GetProvidedService(IServiceProvider serviceProvider)
+    {
+        return _isRequired
+            ? serviceProvider.GetRequiredProvided(_parameterType)
+            : serviceProvider.GetProvided(_parameterType);
+    }
+    private object? GetRegisteredService(IServiceProvider serviceProvider)
+    {
+        return _isRequired
+            ? serviceProvider.GetRequiredService(_parameterType)
+            : serviceProvider.GetService(_parameterType);
     }
 
 
