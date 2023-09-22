@@ -2,8 +2,8 @@
 
 namespace Godot.DependencyInjection.Core.UnitTests.FirstAssemblyToScan;
 
-public class FirstAssembly2
+public class Provided
 {
-    [Inject]
-    public string Guid { get; set; }
+    [Provided]
+    public Provider Value;
 }
