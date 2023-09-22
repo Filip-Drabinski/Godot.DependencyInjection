@@ -17,15 +17,20 @@
 		<RepositoryType></RepositoryType>
 		<PackageTags>Godot, dependency-injection, di</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(Configuration)' == 'Publish'">
-		<PackageReference Include="Godot.DependencyInjection.Core" Version="0.3.0" />
-		<PackageReference Include="Godot.DependencyInjection.Services" Version="0.3.0" />
+	<ItemGroup>
+		<None Include=".\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
+
 	<ItemGroup Condition="'$(Configuration)' != 'Publish'">
 		<ProjectReference Include="..\Godot.DependencyInjection.Core\Godot.DependencyInjection.Core.csproj" />
 		<ProjectReference Include="..\Godot.DependencyInjection.Services\Godot.DependencyInjection.Services.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Publish'">
+		<PackageReference Include="Godot.DependencyInjection.Core" Version="0.3.0" />
+		<PackageReference Include="Godot.DependencyInjection.Services" Version="0.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
