@@ -23,11 +23,11 @@ internal readonly struct InjectionMetadata
 
     public void Inject(IServiceProvider serviceProvider, object instance)
     {
-        for (int i = 0; i < members.Length; i++)
+        for (var i = 0; i < members.Length; i++)
         {
             members[i].Inject(serviceProvider, instance);
         }
-        for (int i = 0; i < methods.Length; i++)
+        for (var i = 0; i < methods.Length; i++)
         {
             methods[i].Inject(serviceProvider, instance);
         }
@@ -35,14 +35,14 @@ internal readonly struct InjectionMetadata
 
     public void AddProviders(IServiceProvider serviceProvider, object instance)
     {
-        for (int i = 0; i < methods.Length; i++)
+        for (var i = 0; i < providersMetadata.Length; i++)
         {
             providersMetadata[i].Add(serviceProvider, instance);
         }
     }
     public void RemoveProviders(IServiceProvider serviceProvider, object instance)
     {
-        for (int i = 0; i < methods.Length; i++)
+        for (var i = 0; i < providersMetadata.Length; i++)
         {
             providersMetadata[i].Remove(serviceProvider, instance);
         }
@@ -62,6 +62,6 @@ internal readonly struct InjectionMetadata
     }
     internal string DebugDisplay()
     {
-        return $@"members: {members.Length}, methods: {methods.Length}, nestedInjections: {nestedInjections.Length}";
+        return $@"members: {members.Length}, methods: {methods.Length}, providing:{providersMetadata.Length}, nestedInjections: {nestedInjections.Length}";
     }
 }

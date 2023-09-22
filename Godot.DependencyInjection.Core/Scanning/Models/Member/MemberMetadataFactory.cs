@@ -10,22 +10,23 @@ internal static class MemberMetadataFactory
     /// <param name="serviceType"></param>
     /// <param name="memberSetter"></param>
     /// <param name="isRequired"></param>
+    /// <param name="isProvided"></param>
     /// <returns></returns>
-    public static IMemberMetadata CreateMemberMetadata(Type serviceType, MemberSetter memberSetter, bool isRequired)
+    public static IMemberMetadata CreateMemberMetadata(Type serviceType, MemberSetter memberSetter, bool isRequired, bool isProvided)
     {
         if (serviceType.IsArray)
         {
             var elementType = serviceType.GetElementType()!;
 
-            return new MemberArrayMetadata(elementType, memberSetter);
+            return new MemberArrayMetadata(elementType, memberSetter,isProvided);
         }
         else if (serviceType.IsGenericType && serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
         {
             var elementType = serviceType.GetGenericArguments()[0];
 
-            return new MemberEnumerableMetadata(elementType, memberSetter);
+            return new MemberEnumerableMetadata(elementType, memberSetter, isProvided);
         }
 
-        return new MemberMetadata(serviceType, memberSetter, isRequired);
+        return new MemberMetadata(serviceType, memberSetter, isRequired, isProvided);
     }
 }

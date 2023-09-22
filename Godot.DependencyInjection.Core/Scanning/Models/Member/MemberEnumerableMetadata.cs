@@ -9,17 +9,21 @@ internal readonly struct MemberEnumerableMetadata : IMemberMetadata
 {
     private readonly Type _serviceType;
     private readonly MemberSetter _memberSetter;
+    private readonly bool _isProvided;
 
-    public MemberEnumerableMetadata(Type serviceType, MemberSetter memberSetter)
+    public MemberEnumerableMetadata(Type serviceType, MemberSetter memberSetter, bool isProvided)
     {
         _serviceType = serviceType;
         _memberSetter = memberSetter;
+        _isProvided = isProvided;
     }
 
     /// <inheritdoc/>
     public void Inject(IServiceProvider serviceProvider, object instance)
     {
-        var services = serviceProvider.GetServicesEnumerable(_serviceType);
+        var services = _isProvided
+            ? serviceProvider.GetProvidedEnumerable(_serviceType)
+            : serviceProvider.GetServicesEnumerable(_serviceType);
         _memberSetter.Invoke(instance, services);
     }
 
