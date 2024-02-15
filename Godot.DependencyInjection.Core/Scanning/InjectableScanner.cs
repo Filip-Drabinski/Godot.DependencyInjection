@@ -126,7 +126,9 @@ internal static class InjectionScanner
                 var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(properties[i].PropertyType, properties[i].SetValue, memberAttribute.IsRequired);
                 membersMetadata.Add(memberMetadata);
             }
-            else if (nestedAttribute is not null)
+
+
+            if (nestedAttribute is not null)
             {
                 var nestedMetadata = new NestedInjectionMetadata(properties[i].PropertyType, properties[i].GetValue);
                 nestedInjectionMetadata.Add(nestedMetadata);
@@ -143,7 +145,7 @@ internal static class InjectionScanner
                 var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(fields[i].FieldType, fields[i].SetValue, memberAttribute.IsRequired);
                 membersMetadata.Add(memberMetadata);
             }
-            else if (nestedAttribute is not null)
+            if (nestedAttribute is not null)
             {
                 var nestedMetadata = new NestedInjectionMetadata(fields[i].FieldType, fields[i].GetValue);
                 nestedInjectionMetadata.Add(nestedMetadata);
@@ -167,7 +169,7 @@ internal static class InjectionScanner
                 var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(properties[i].PropertyType, properties[i].SetValue, memberAttribute.IsRequired);
                 membersMetadata.Add(memberMetadata);
             }
-            else if (nestedAttribute is not null)
+            if (nestedAttribute is not null)
             {
                 var nestedMetadata = new NestedInjectionMetadata(properties[i].PropertyType, properties[i].GetValue);
                 nestedInjectionMetadata.Add(nestedMetadata);
@@ -192,7 +194,7 @@ internal static class InjectionScanner
                 var memberMetadata = MemberMetadataFactory.CreateMemberMetadata(fields[i].FieldType, fields[i].SetValue, memberAttribute.IsRequired);
                 membersMetadata.Add(memberMetadata);
             }
-            else if (nestedAttribute is not null)
+            if (nestedAttribute is not null)
             {
                 var nestedMetadata = new NestedInjectionMetadata(fields[i].FieldType, fields[i].GetValue);
                 nestedInjectionMetadata.Add(nestedMetadata);
