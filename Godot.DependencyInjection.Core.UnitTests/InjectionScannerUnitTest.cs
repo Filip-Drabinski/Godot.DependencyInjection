@@ -45,7 +45,7 @@ public class InjectionScannerUnitTest
         var metadata = InjectionScanner.CollectMetadata(assemblies);
         var typeMetadata = metadata[typeof(FirstAssembly1)];
 
-        typeMetadata.members.Should().HaveCount(6);
+        typeMetadata.members.Should().HaveCount(7);
         typeMetadata.methods.Should().HaveCount(3);
         typeMetadata.nestedInjections.Should().HaveCount(3);
     }
