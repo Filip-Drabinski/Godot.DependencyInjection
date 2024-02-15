@@ -17,9 +17,9 @@ public class FirstAssembly1
 
     [Inject]
     protected Guid GuidProtected { get; set; }
+    
     [InjectMembers]
     protected FirstAssembly2 FirstAssembly2Protected { get; set; } = null!;
-    [InjectMembers]
 
     [Inject]
     private Guid GuidPrivate { get; set; }
