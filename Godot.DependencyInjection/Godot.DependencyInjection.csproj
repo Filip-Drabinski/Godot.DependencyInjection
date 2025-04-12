@@ -26,8 +26,8 @@
     <ProjectReference Include="..\Godot.DependencyInjection.Services\Godot.DependencyInjection.Services.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Publish'">
-    <PackageReference Include="Godot.DependencyInjection.Core" Version="0.3.0" />
-    <PackageReference Include="Godot.DependencyInjection.Services" Version="0.3.0" />
+    <PackageReference Include="Godot.DependencyInjection.Core" Version="0.4.0" />
+    <PackageReference Include="Godot.DependencyInjection.Services" Version="0.4.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Godot.SourceGenerators" Version="4.4.1" />
