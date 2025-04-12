@@ -1,14 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
@@ -23,11 +20,9 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Godot.DependencyInjection.Core.UnitTests.FirstAssemblyToScan\Godot.DependencyInjection.Core.UnitTests.FirstAssemblyToScan.csproj" />
     <ProjectReference Include="..\Godot.DependencyInjection.Core.UnitTests.SecondAssemblyToScan\Godot.DependencyInjection.Core.UnitTests.SecondAssemblyToScan.csproj" />
     <ProjectReference Include="..\Godot.DependencyInjection.Core\Godot.DependencyInjection.Core.csproj" />
   </ItemGroup>
-
 </Project>

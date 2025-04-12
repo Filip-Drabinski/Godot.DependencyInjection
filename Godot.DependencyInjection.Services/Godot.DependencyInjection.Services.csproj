@@ -1,32 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Configurations>Debug;Release;Publish</Configurations>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<Title>Godot.DependencyInjection.Services</Title>
-		<RepositoryUrl>https://github.com/Filip-Drabinski/Godot.DependencyInjection</RepositoryUrl>
-		<VersionPrefix>0.4.0</VersionPrefix>
-		<Description>part of custom dependency injection for Godot game engine</Description>
-		<PackageProjectUrl>https://github.com/Filip-Drabinski/Godot.DependencyInjection/tree/main/Godot.DependencyInjection.Services</PackageProjectUrl>
-		<RepositoryType></RepositoryType>
-		<PackageTags>Godot, dependency-injection, di</PackageTags>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include=".\..\README.md" Pack="true" PackagePath="\"/>
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="GodotSharp" Version="4.0.2" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-	</ItemGroup>
-
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Configurations>Debug;Release;Publish</Configurations>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Title>Godot.DependencyInjection.Services</Title>
+    <RepositoryUrl>https://github.com/Filip-Drabinski/Godot.DependencyInjection</RepositoryUrl>
+    <VersionPrefix>0.4.0</VersionPrefix>
+    <Description>part of custom dependency injection for Godot game engine</Description>
+    <PackageProjectUrl>https://github.com/Filip-Drabinski/Godot.DependencyInjection/tree/main/Godot.DependencyInjection.Services</PackageProjectUrl>
+    <RepositoryType>
+    </RepositoryType>
+    <PackageTags>Godot, dependency-injection, di</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="GodotSharp" Version="4.4.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
+  </ItemGroup>
 </Project>
