@@ -11,14 +11,15 @@ public class FirstAssembly1
 {
     [Inject]
     public Guid GuidPublic { get; set; }
-    [InjectMembers]
-    public FirstAssembly2 FirstAssembly2Public { get; set; } = null!;
+
+    [Inject, InjectMembers]
+    public FirstAssembly2 FirstAssembly2Public;
 
     [Inject]
     protected Guid GuidProtected { get; set; }
+    
     [InjectMembers]
     protected FirstAssembly2 FirstAssembly2Protected { get; set; } = null!;
-    [InjectMembers]
 
     [Inject]
     private Guid GuidPrivate { get; set; }
